@@ -1,17 +1,14 @@
-use crate::to_do::structs::Item;
+use super::structs::Item;
 use std::io;
-
 pub fn take_input(message: &str) -> String {
-    let mut data = String::new();
     println!("{message}");
+    let mut data = String::new();
     io::stdin()
         .read_line(&mut data)
         .expect("Failed to read line");
     data
 }
-
-pub fn add_item(completed: bool, items: &mut Vec<Item>) {
-    let data = take_input("Enter item data: ");
+pub fn add_item(data: String, completed: bool, items: &mut Vec<Item>) {
     if items.iter().any(|item| item.data == data) {
         println!("Item with this data already exists");
     } else {
@@ -19,15 +16,12 @@ pub fn add_item(completed: bool, items: &mut Vec<Item>) {
         items.push(item);
     }
 }
-
 pub fn see_list(items: &[Item]) {
     for item in items {
         println!("-Data:{}-Completed:{}\n", item.data, item.completed);
     }
 }
-
-pub fn delete_item(message: &str, items: &mut Vec<Item>) -> Item {
-    let data = take_input(message);
+pub fn delete_item(data: String, items: &mut Vec<Item>) -> Item {
     let index = items
         .iter()
         .position(|item| item.data == data)
