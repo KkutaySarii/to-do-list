@@ -1,44 +1,20 @@
-// to_do klasör altında ki functions.rs dosyasındaki fonksiyonlarımı
-//test fonksiyonlarımda kullanmak istiyorum, onları nasıl çağırırım
-use std::fmt;
-
-#[derive(PartialEq, Eq)]
-pub struct Item {
-    pub data: String,
-    pub completed: bool,
-}
-
-impl fmt::Debug for Item {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "Item {{ data: {}, completed: {} }}",
-            self.data, self.completed
-        )
-    }
-}
-pub fn add_item(data: String, completed: bool, items: &mut Vec<Item>) {
-    if items.iter().any(|item| item.data == data) {
-        println!("Item with this data already exists");
-    } else {
-        let item = Item { data, completed };
-        items.push(item);
-    }
-}
-pub fn delete_item(data: String, items: &mut Vec<Item>) -> Item {
-    let index = items
-        .iter()
-        .position(|item| item.data == data)
-        .expect("Item not found");
-    let item = items.remove(index);
-    item
-}
-
 #[cfg(test)]
-mod tests {
-    use super::*;
+pub mod tests {
+    use crate::to_do::add_item;
+    use crate::to_do::delete_item;
+    use crate::to_do::Item;
+    use std::fmt;
     fn items_are_equal(item1: &Item, item2: &Item) -> bool {
         item1.data == item2.data && item1.completed == item2.completed
+    }
+    impl fmt::Debug for Item {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            write!(
+                f,
+                "Item {{ data: {}, completed: {} }}",
+                self.data, self.completed
+            )
+        }
     }
     #[test]
     fn test_add_item() {
